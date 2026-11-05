@@ -25,7 +25,7 @@ const itemDefs=[
 const recipes=[
  {id:'regen_capsule',name:'Cápsula regenerativa',desc:'Restaura 50% da vida.',needs:{namek_herb:2,alloy:1},result:'regen_capsule',icon:'✚'},
  {id:'ki_orb',name:'Esfera de Ki',desc:'+25 de Ki máximo temporário? Não: recupera 45 de Ki.',needs:{ki_crystal:2,alloy:1},result:'ki_orb',icon:'✹'},
- {id:'battle_plating',name:'Placa reforçada',desc='Cria uma armadura de batalha.',needs:{alloy:3,ki_crystal:1},result:'armor',icon:'♜'}
+ {id:'battle_plating',name:'Placa reforçada',desc:'Cria uma armadura de batalha.',needs:{alloy:3,ki_crystal:1},result:'armor',icon:'♜'}
 ];
 const craftedDefs={
  regen_capsule:{id:'regen_capsule',name:'Cápsula regenerativa',rarity:'RARO',desc:'Restaura 50% da vida.',healHalf:true,icon:'✚',tone:'green'},
@@ -47,7 +47,7 @@ function powerTotal(){return Math.round(player.power+player.level*12+player.equi
 function refreshRank(){const p=powerTotal()+conquered.size*65;let r=rankList[0][0];for(const [name,min] of rankList)if(p>=min)r=name;player.rank=r;}
 function collides(x,y,r){if(x<r||y<r||x>MAP_W-r||y>MAP_H-r)return true;const list=mode==='ship'?shipObstacles:planetObstacles;return list.some(o=>x+r>o.x&&x-r<o.x+o.w&&y+r>o.y&&y-r<o.y+o.h);}
 function move(o,dx,dy,r){if(!collides(o.x+dx,o.y,r))o.x+=dx;if(!collides(o.x,o.y+dy,r))o.y+=dy;}
-function openPanel(type){$('panel').classList.remove('hidden');$('interactionHint').style.display='none';document.querySelectorAll('.top-actions button').forEach(b=>b.classList.remove('active'));const btn={missions:'missionsBtn',skills:'skillsBtn',inventory:'inventoryBtn',ship:'shipBtn'}[type];if(btn)$(btn).classList.add('active');renderPanel(type);}
+function openPanel(type){$('panel').classList.remove('hidden');$('interactionHint').style.display='none';document.querySelectorAll('.top-actions button').forEach(b=>b.classList.remove('active'));const btn={missions:'missionsBtn',skills:'skillsBtn',inventory:'inventoryBtn',ship:'shipBtn',customizer:'customizerBtn'}[type];if(btn)$(btn).classList.add('active');renderPanel(type);}
 function closePanel(){$('panel').classList.add('hidden');$('interactionHint').style.display='';document.querySelectorAll('.top-actions button').forEach(b=>b.classList.toggle('active',b.id==='shipBtn'));}
 function renderPanel(type){
  const titles={ship:['CENTRAL DE COMANDO','Nave de Frieza'],missions:['ORDENS DO IMPÉRIO','Missões de conquista'],skills:['TREINAMENTO DE COMBATE','Técnicas e habilidades'],inventory:['EQUIPAMENTO','Inventário'],customizer:['APARÊNCIA DO GUERREIRO','Personalizador de personagem']};
