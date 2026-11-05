@@ -205,7 +205,6 @@ function updateHud() {
   $('xpBar').style.width=(xp/(level*100)*100)+'%';
   $('enemyCount').textContent=enemies.filter(e=>e.alive&&!e.dummy).length;
   $('powerText').textContent=10+(level-1)*2;
-  $('chargeText').textContent=Math.floor(player.charge)+'%';
 }
 
 function pixelRect(x,y,w,h,color) {ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
@@ -233,7 +232,7 @@ function drawBackground() {
   pixelRect(0,FLOOR,W,H-FLOOR,'#68483d');pixelRect(0,FLOOR,W,5,'#e4b16d');
   for(let i=0;i<34;i++){const x=((i*37-camera)%W+W)%W;pixelRect(x,FLOOR+12+(i%5)*9,rand(5,12),2,'#8b5e49');}
   // rocks and sparse grass
-  for(let i=0;i<8;i++){const x=((i*113-camera*.72)%760+760)%760-40;pixelRect(x,FLOOR-9,18,8,'#79604d');pixelRect(x+4,FLOOR-14,10,6,'#92765a');}
+  for(let i=0;i<8;i++){const x=((i*113-camera*.72)%760+760)%760-40;pixelRect(x,FLOOR-9,18,8,'#79604d');pixelRect(x+4,FLOOR-14,10+(i%3)*2,6,'#92765a');}
 }
 function drawAura(x,y,r,color,phase=elapsed) {
   ctx.save();ctx.globalCompositeOperation='lighter';
