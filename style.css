@@ -72,3 +72,22 @@ canvas{background:#101a29;image-rendering:pixelated}
 button:active{transform:translateY(1px)}
 .toast{text-shadow:2px 3px #713b2c,0 0 22px #ffb45c}
 @media(max-width:760px){.game-frame{box-shadow:0 0 0 3px #091321,0 0 0 4px #5a7188,0 16px 35px #000b}}
+
+/* Inventário visual, equipamento e personalizador inicial */
+.top-actions{flex-wrap:wrap}
+.inventory-summary{display:flex;gap:14px;flex-wrap:wrap;margin:2px 0 12px;color:#ffe0a0;font-weight:800;font-size:12px}
+.inventory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.item-card{display:flex;align-items:center;gap:11px;min-width:0;padding:9px;background:linear-gradient(135deg,#263e58,#12243a);border:1px solid #607990;box-shadow:inset 0 1px #ffffff12}
+.item-art{width:58px;height:58px;flex:0 0 58px;display:grid;place-items:center;font:900 30px 'Barlow Condensed',sans-serif;border:2px solid #9eb2c9;box-shadow:inset 0 0 15px #fff2,0 4px 10px #0008;text-shadow:0 2px 4px #000}
+.item-art.cyan{color:#8df3ff;background:radial-gradient(circle,#1677b9,#10243d 70%);border-color:#66cde9}
+.item-art.gold{color:#ffe39a;background:radial-gradient(circle,#a56b25,#33243a 72%);border-color:#e7bd68}
+.item-art.steel{color:#d9e4f1;background:linear-gradient(145deg,#70869d,#1b2c40);border-color:#9eafc0}
+.item-art.green{color:#a9ffc1;background:radial-gradient(circle,#248b58,#102b2b 72%);border-color:#7be5a1}
+.item-info{min-width:0;flex:1}.item-info b{display:block;color:#ffe2a0;font-size:13px}.item-info small,.item-info p{display:block;color:#b9cbdc;font-size:10px;margin:3px 0}.item-info p{font-size:11px}
+.item-info button,.recipe-card button{padding:6px 9px;font-size:10px}.item-quantity{font-size:10px;color:#8fe5c1;font-weight:800}
+.section-title{margin:16px 0 8px;padding-bottom:5px;border-bottom:1px solid #71879c;color:#ffe09a;font:900 17px 'Barlow Condensed',sans-serif}
+.recipe-grid{display:grid;gap:8px}.recipe-card{display:flex;gap:12px;align-items:center;padding:9px;background:linear-gradient(90deg,#263d55,#15283e);border:1px solid #607990}.recipe-symbol{width:48px;height:48px;display:grid;place-items:center;flex:0 0 48px;color:#8cecff;background:#10243a;border:1px solid #8ba8bf;font-size:26px}.recipe-card b{color:#ffe09a}.recipe-card p,.recipe-card small{display:block;margin:3px 0;color:#c2d2e0;font-size:11px}.recipe-card button{margin-top:5px}.recipe-card button:disabled{opacity:.4;cursor:not-allowed}
+.custom-layout{display:grid;grid-template-columns:minmax(170px,.8fr) 1.2fr;gap:16px}.custom-preview{position:relative;min-height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse,#355777,#101d30 72%);border:1px solid #6c879f}.preview-aura{position:absolute;width:110px;height:155px;border:4px solid var(--aura);border-radius:50%;filter:blur(2px);box-shadow:0 0 24px var(--aura);opacity:.7}.preview-warrior{position:relative;width:58px;height:105px;margin-top:20px}.preview-hair{position:absolute;z-index:3;top:2px;left:17px;width:25px;height:24px;background:var(--hair);clip-path:polygon(30% 30%,5% 0,45% 20%,60% 0,72% 24%,100% 12%,82% 55%,95% 75%,55% 67%,35% 100%,18% 65%,0 75%)}.preview-body{position:absolute;top:25px;left:8px;width:43px;height:52px;background:var(--armor);clip-path:polygon(25% 0,75% 0,100% 20%,83% 100%,17% 100%,0 20%);border:2px solid #d7e1e9}.preview-boots{position:absolute;top:73px;left:10px;width:40px;height:17px;border-bottom:8px solid #d9e1eb}.custom-preview b{position:relative;margin-top:13px;color:#ffe09a;font-size:11px}.custom-preview small{position:relative;max-width:90%;text-align:center;color:#b8c9d9;font-size:10px}.custom-options{display:grid;gap:12px}.custom-group h3{margin:0 0 7px;color:#ffe09a;font:800 14px 'Barlow Condensed',sans-serif;text-transform:uppercase}.swatches,.choice-row{display:flex;gap:8px;flex-wrap:wrap}.swatch{width:34px;height:34px;padding:0;border-radius:50%;background:var(--swatch);border:2px solid #9db1c4;clip-path:none}.swatch.selected{outline:3px solid #ffe09a;outline-offset:2px}.choice-row button{font-size:10px;padding:7px}
+.start-buttons{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.start-buttons button:first-child{background:linear-gradient(180deg,#344e69,#1a2d43);color:#eaf1f8;border-color:#7793aa}
+.panel.start-customizer{z-index:8}
+@media(max-width:600px){.inventory-grid{grid-template-columns:1fr}.custom-layout{grid-template-columns:1fr}.custom-preview{min-height:180px}.item-art{width:48px;height:48px;flex-basis:48px}}
