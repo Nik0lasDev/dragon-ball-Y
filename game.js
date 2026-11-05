@@ -101,8 +101,41 @@ function drawShip(){rect(0,0,W,H,'#253c55');for(let y=0;y<H;y+=32)for(let x=0;x<
 }
 function drawConsole(x,y,label){rect(x-32,y-22,64,44,'#14263b');rect(x-27,y-17,54,29,'#47718d');rect(x-23,y-13,46,21,'#6ed2dc');rect(x-18,y-8,36,3,'#d8f6ed');rect(x-18,y-2,23,3,'#d8f6ed');ctx.fillStyle='#ffe3a0';ctx.font='bold 7px monospace';ctx.textAlign='center';ctx.fillText(label,x,y+34);}
 function drawNpc(x,y,color){ctx.fillStyle='#0006';ctx.beginPath();ctx.ellipse(x,y+12,14,6,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,10,13,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f2c7a4';ctx.beginPath();ctx.arc(x,y-10,7,0,Math.PI*2);ctx.fill();}
-function drawPlanet(){const p=activePlanet;rect(0,0,W,H,p.ground);for(let y=Math.floor(camera.y/32)*32;y<camera.y+H+32;y+=32)for(let x=Math.floor(camera.x/32)*32;x<camera.x+W+32;x+=32){if((x/32*7+y/32*11)%5===0)rect(x-camera.x+8,y-camera.y+10,4,3,p.dark);if((x/32+y/32)%7===0)rect(x-camera.x+20,y-camera.y+22,5,2,p.accent);}rect(0,0,W,14,p.dark);rect(0,H-14,W,14,p.dark);for(let i=0;i<14;i++){const x=(i*137+80)%MAP_W-camera.x,y=(i*193+45)%MAP_H-camera.y;rect(x,y,25,9,p.dark);rect(x+4,y-5,15,7,p.accent);}for(const o of planetObstacles){const x=o.x-camera.x,y=o.y-camera.y;ctx.fillStyle='#0004';ctx.beginPath();ctx.ellipse(x+o.w/2,y+o.h, o.w*.55,8,0,0,Math.PI*2);ctx.fill();rect(x+5,y+7,o.w-10,o.h-10,p.dark);rect(x+12,y,o.w-24,o.h-14,p.accent);}}
-function drawPlayer(){const x=player.x-camera.x,y=player.y-camera.y;ctx.save();ctx.translate(x,y);ctx.fillStyle='#0005';ctx.beginPath();ctx.ellipse(0,12,15,6,0,0,Math.PI*2);ctx.fill();if(player.invuln>0&&Math.floor(elapsed*18)%2===0)ctx.globalAlpha=.4;ctx.fillStyle='#c7d1df';ctx.beginPath();ctx.ellipse(0,3,11,13,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#eee8dc';ctx.beginPath();ctx.arc(0,-7,8,0,Math.PI*2);ctx.fill();ctx.fillStyle='#4b5770';ctx.beginPath();ctx.arc(-4,-11,5,0,Math.PI*2);ctx.arc(4,-11,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#d7a35d';ctx.fillRect(-9,2,18,3);if(player.attack>0){ctx.strokeStyle='#fff0a0';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(player.face.x*30,player.face.y*30);ctx.stroke();}ctx.restore();}
+function drawPlanet(){
+ const p=activePlanet;rect(0,0,W,H,p.ground);
+ // Solo em placas orgânicas, trilhas e vegetação em camadas para cada planeta.
+ for(let y=Math.floor(camera.y/32)*32;y<camera.y+H+32;y+=32)for(let x=Math.floor(camera.x/32)*32;x<camera.x+W+32;x+=32){
+  const seed=Math.abs(Math.floor(x/32)*17+Math.floor(y/32)*31)%13;
+  if(seed===0||seed===5){rect(x-camera.x+3,y-camera.y+5,24,17,p.dark);rect(x-camera.x+7,y-camera.y+7,17,10,p.accent);}
+  else if(seed===2||seed===9){rect(x-camera.x+8,y-camera.y+18,11,4,p.dark);rect(x-camera.x+12,y-camera.y+13,4,7,p.accent);}
+  if(seed===3){rect(x-camera.x+2,y-camera.y+25,6,3,p.accent);rect(x-camera.x+5,y-camera.y+21,2,5,p.dark);}
+ }
+ rect(0,0,W,13,p.dark);rect(0,H-13,W,13,p.dark);
+ // Pedras e formações exclusivas distribuídas de forma determinística.
+ for(let i=0;i<25;i++){const wx=(i*173+61)%MAP_W,wy=(i*227+93)%MAP_H,x=wx-camera.x,y=wy-camera.y;if(x<-35||x>W+35||y<-35||y>H+35)continue;const s=5+(i%4)*3;rect(x-s,y-s*.45,s*2,s,p.dark);rect(x-s*.55,y-s*.8,s,s*.45,p.accent);if(i%3===0)rect(x+3,y+2,4,3,p.accent);}
+ // Estruturas alienígenas, cristais e ruínas em torno das zonas de combate.
+ for(let i=0;i<9;i++){const wx=(i*311+170)%MAP_W,wy=(i*179+90)%MAP_H,x=wx-camera.x,y=wy-camera.y;if(x<-50||x>W+50||y<-50||y>H+50)continue;ctx.fillStyle='#0004';ctx.beginPath();ctx.ellipse(x,y+12,19,6,0,0,Math.PI*2);ctx.fill();rect(x-12,y-20,24,29,p.dark);rect(x-8,y-25,16,9,p.accent);rect(x-4,y-17,8,17,p.ground);rect(x-17,y+5,34,4,p.dark);}
+ for(const o of planetObstacles){const x=o.x-camera.x,y=o.y-camera.y;ctx.fillStyle='#0005';ctx.beginPath();ctx.ellipse(x+o.w/2,y+o.h,o.w*.62,9,0,0,Math.PI*2);ctx.fill();rect(x+3,y+8,o.w-6,o.h-8,p.dark);rect(x+9,y+2,o.w-18,o.h-15,p.accent);rect(x+14,y+7,5,Math.max(8,o.h-24),p.dark);rect(x+o.w-22,y+7,5,Math.max(8,o.h-24),p.dark);rect(x+o.w*.35,y+o.h-12,o.w*.3,4,p.ground);}
+ // Horizonte e vinheta dão profundidade sem esconder a área jogável.
+ const glow=ctx.createRadialGradient(W/2,H/2,35,W/2,H/2,Math.max(W,H)*.72);glow.addColorStop(0,'#ffffff08');glow.addColorStop(1,'#07111b55');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+}
+function drawPlayer(){
+ const x=Math.round(player.x-camera.x),y=Math.round(player.y-camera.y),step=Math.sin(player.walk)*2;
+ ctx.save();ctx.translate(x,y);ctx.fillStyle='#0006';ctx.beginPath();ctx.ellipse(0,13,16,6,0,0,Math.PI*2);ctx.fill();
+ if(player.invuln>0&&Math.floor(elapsed*18)%2===0)ctx.globalAlpha=.38;
+ // Pernas, botas e armadura com detalhes de pixel-art.
+ ctx.fillStyle='#343c55';ctx.fillRect(-8,5+step,6,9);ctx.fillRect(2,5-step,6,9);ctx.fillStyle='#d7dce5';ctx.fillRect(-9,12+step,8,4);ctx.fillRect(2,12-step,8,4);
+ ctx.fillStyle='#c8d2df';ctx.fillRect(-11,-7,22,16);ctx.fillStyle='#f0e8dc';ctx.fillRect(-8,-12,16,8);ctx.fillStyle='#8999ad';ctx.fillRect(-12,-3,5,10);ctx.fillRect(7,-3,5,10);
+ ctx.fillStyle='#d6a65f';ctx.fillRect(-11,1,22,4);ctx.fillStyle='#fff0c7';ctx.fillRect(-3,-5,6,7);
+ // Cabeça e cabelo pontudo do guerreiro.
+ ctx.fillStyle='#e7b994';ctx.fillRect(-6,-18,12,10);ctx.fillStyle='#282638';ctx.fillRect(-7,-23,14,7);ctx.fillRect(-9,-20,5,7);ctx.fillRect(4,-21,5,7);ctx.fillRect(-4,-28,5,7);ctx.fillRect(1,-26,5,5);
+ ctx.fillStyle='#20202a';ctx.fillRect(player.face.x>=0?2:-5,-14,3,2);
+ // Scouter no rosto.
+ ctx.fillStyle='#6eeaff';ctx.fillRect(player.face.x>=0?5:-8,-16,4,4);ctx.fillStyle='#e6c16e';ctx.fillRect(player.face.x>=0?4:-7,-17,5,1);
+ if(player.attack>0){ctx.strokeStyle='#fff0a0';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(player.face.x*34,player.face.y*34);ctx.stroke();}
+ if(player.dodge>0){ctx.globalAlpha=.25;ctx.fillStyle='#d5f8ff';ctx.beginPath();ctx.ellipse(-player.face.x*12,-player.face.y*12,13,17,0,0,Math.PI*2);ctx.fill();}
+ ctx.restore();
+}
 function drawEnemy(e){
  const x=e.x-camera.x,y=e.y-camera.y;ctx.save();ctx.translate(Math.round(x),Math.round(y));
  ctx.fillStyle='#0006';ctx.beginPath();ctx.ellipse(0,e.r*.85,e.r*1.25,6,0,0,Math.PI*2);ctx.fill();
