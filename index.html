@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#101d30">
-<meta name="description" content="Dragon Ball: Ki Rising — jogo de luta pixel art em desenvolvimento.">
+<meta name="description" content="Dragon Ball: Ki Rising — RPG de ação fan-made em pixel art.">
 <title>Dragon Ball: Ki Rising</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,43 +13,33 @@
 <body>
 <main class="shell">
   <header>
-    <div>
-      <h1>DRAGON BALL <span>· KI RISING</span></h1>
-      <div class="sub">Top-down action RPG · Build 0.3</div>
-    </div>
-    <nav class="top-actions" aria-label="Modos de jogo">
-      <button id="arenaBtn" class="active" type="button">Combate</button>
-      <button id="trainBtn" type="button">Treinamento</button>
-    </nav>
+    <div><h1>DRAGON BALL <span>· KI RISING</span></h1><div class="sub">Frieza Force RPG · Build 0.4</div></div>
+    <nav class="top-actions"><button id="shipBtn" class="active" type="button">Nave</button><button id="missionsBtn" type="button">Missões</button><button id="skillsBtn" type="button">Técnicas</button><button id="inventoryBtn" type="button">Inventário</button></nav>
   </header>
-  <section class="game-frame" aria-label="Área do jogo">
-    <canvas id="game" width="640" height="360" aria-label="RPG de ação top-down em pixel art"></canvas>
+  <section class="game-frame">
+    <canvas id="game" width="640" height="360" aria-label="RPG top-down em pixel art"></canvas>
     <div class="hud">
       <div class="status">
-        <div class="statline"><span>VIDA</span><span id="hpText">100 / 100</span></div>
-        <div class="bar"><div id="hpBar" class="fill hp"></div></div>
-        <div class="statline"><span>KI</span><span id="kiText">100 / 100</span></div>
-        <div class="bar"><div id="kiBar" class="fill ki"></div></div>
+        <div class="statline"><span>VIDA</span><span id="hpText">100 / 100</span></div><div class="bar"><div id="hpBar" class="fill hp"></div></div>
+        <div class="statline"><span>KI</span><span id="kiText">100 / 100</span></div><div class="bar"><div id="kiBar" class="fill ki"></div></div>
       </div>
-      <div class="center-info" id="modeLabel">CAMPO DE BATALHA</div>
+      <div class="center-info" id="modeLabel">NAVE DE FRIEZA</div>
       <div class="status">
-        <div class="statline"><span>NÍVEL <b id="level">1</b></span><span>EXP <b id="xpText">0</b></span></div>
-        <div class="bar"><div id="xpBar" class="fill xp" style="width:0%"></div></div>
-        <div class="statline"><span>INIMIGOS</span><span id="enemyCount">1</span></div>
-        <div class="statline"><span>FORÇA</span><span id="powerText">10</span></div>
+        <div class="statline"><span>NÍVEL <b id="level">1</b></span><span>EXP <b id="xpText">0</b></span></div><div class="bar"><div id="xpBar" class="fill xp"></div></div>
+        <div class="statline"><span>FORÇA DE LUTA</span><span id="powerText">100</span></div>
+        <div class="statline"><span>POSTO</span><span id="rankText">RECRUTA</span></div>
       </div>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="panel hidden" id="panel" aria-live="polite">
+      <div class="panel-head"><div><div class="eyebrow" id="panelEyebrow">CENTRAL DA NAVE</div><h2 id="panelTitle">Central de operações</h2></div><button id="closePanel" class="close" type="button" aria-label="Fechar">✕</button></div>
+      <div id="panelContent" class="panel-content"></div>
+    </div>
+    <div class="interaction-hint" id="interactionHint">Pressione <b>E</b> para interagir</div>
   </section>
   <footer class="bottom">
-    <div class="keys">
-      <span><b class="key">W A S D</b> mover</span>
-      <span><b class="key">K</b> golpe corpo a corpo</span>
-      <span><b class="key">J</b> carregar / lançar Ki</span>
-      <span><b class="key">ESPAÇO</b> esquiva</span>
-      <span><b class="key">SHIFT</b> esquiva</span>
-    </div>
-    <span class="hint">Derrote os inimigos para liberar a saída e avançar de área.</span>
+    <div class="keys"><span><b class="key">W A S D</b> mover</span><span><b class="key">E</b> interagir</span><span><b class="key">K</b> ataque</span><span><b class="key">J</b> carregar Ki</span><span><b class="key">1 2 3</b> técnicas</span><span><b class="key">ESPAÇO</b> esquiva</span></div>
+    <span class="hint">Conquiste planetas, aumente sua força e suba de patente na Força de Frieza.</span>
   </footer>
 </main>
 <script src="game.js" defer></script>
