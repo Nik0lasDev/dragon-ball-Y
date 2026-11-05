@@ -192,7 +192,18 @@ function drawShots(list){for(const p of list){const x=p.x-camera.x,y=p.y-camera.
 function draw(){if(mode==='ship')drawShip();else drawPlanet();for(const d of drops){const x=d.x-camera.x,y=d.y-camera.y;ctx.fillStyle='#ffe27a';ctx.beginPath();ctx.arc(x,y,8+Math.sin(elapsed*5)*2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.fillRect(x-2,y-2,4,4);}for(const e of enemies)if(e.alive)drawEnemy(e);drawShots(shots);drawShots(enemyShots);drawPlayer();for(const p of particles){ctx.globalAlpha=clamp(p.life/p.max,0,1);rect(p.x-camera.x,p.y-camera.y,p.size,p.size,p.color);}ctx.globalAlpha=1;for(const t of floaters){ctx.globalAlpha=clamp(t.life,0,1);ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillStyle=t.color;ctx.fillText(t.text,t.x-camera.x,t.y-camera.y);}ctx.globalAlpha=1;if(player.charge>0){rect(235,H-19,170,7,'#15243a');rect(237,H-17,166*player.charge/player.maxKi,3,'#6deaff');ctx.font='bold 8px monospace';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.fillText('CARREGANDO KI',320,H-23);}if(mode==='ship'){const near=dist(player,{x:780,y:320})<110||dist(player,{x:575,y:320})<100||dist(player,{x:400,y:320})<90;$('interactionHint').style.opacity=near?'1':'.35';}else{$('interactionHint').style.opacity='.6';}if(gameOver){ctx.fillStyle='#091321bb';ctx.fillRect(0,0,W,H);ctx.textAlign='center';ctx.font='bold 25px monospace';ctx.fillStyle='#ffd58b';ctx.fillText('DERROTADO',W/2,H/2);ctx.font='10px monospace';ctx.fillStyle='#fff';ctx.fillText('Pressione R para voltar à nave',W/2,H/2+22);}}
 function drawStartScreen(){rect(0,0,W,H,'#172b42');for(let y=0;y<H;y+=32)for(let x=0;x<W;x+=32){rect(x+1,y+1,30,30,(x/32+y/32)%2?'#263f5b':'#20364f');}rect(0,0,W,18,'#0c1929');rect(0,H-18,W,18,'#0c1929');ctx.strokeStyle='#d8b86e';ctx.lineWidth=2;ctx.strokeRect(205,105,230,150);ctx.fillStyle='#e6c16e';ctx.font='bold 16px monospace';ctx.textAlign='center';ctx.fillText('FRIEZA FORCE',320,145);ctx.fillStyle='#d8e5f0';ctx.font='10px monospace';ctx.fillText('AGUARDANDO ORDEM DO COMANDANTE',320,180);ctx.fillStyle='#6deaff';ctx.fillRect(245,205,150,3);}
 function frame(t){const dt=last?Math.min((t-last)/1000,.033):0;last=t;if(started){update(dt);draw();}else drawStartScreen();requestAnimationFrame(frame);}
-$('startCustomizeBtn')?.addEventListener('click',()=>{openPanel('customizer');$('panel').classList.add('start-customizer');});
-$('closePanel').addEventListener('click',()=>{$('panel').classList.remove('start-customizer');closePanel();});
+$('startCustomizeBtn')?.addEventListener('click',()=>{
+ $('startScreen').classList.add('hidden');
+ openPanel('customizer');
+ $('panel').classList.add('start-customizer');
+ $('panel').setAttribute('data-return-start','true');
+});
+$('closePanel').addEventListener('click',()=>{
+ const returnToStart=$('panel').getAttribute('data-return-start')==='true';
+ $('panel').classList.remove('start-customizer');
+ $('panel').removeAttribute('data-return-start');
+ closePanel();
+ if(returnToStart&&!started)$('startScreen').classList.remove('hidden');
+});
 refreshRank();updateHud();requestAnimationFrame(frame);
 })();
