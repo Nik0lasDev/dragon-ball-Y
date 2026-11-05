@@ -15,7 +15,7 @@
   <header>
     <div>
       <h1>DRAGON BALL <span>· KI RISING</span></h1>
-      <div class="sub">Pixel fighter · Build 0.2</div>
+      <div class="sub">Top-down action RPG · Build 0.3</div>
     </div>
     <nav class="top-actions" aria-label="Modos de jogo">
       <button id="arenaBtn" class="active" type="button">Combate</button>
@@ -23,7 +23,7 @@
     </nav>
   </header>
   <section class="game-frame" aria-label="Área do jogo">
-    <canvas id="game" width="640" height="360" aria-label="Jogo de luta em pixel art"></canvas>
+    <canvas id="game" width="640" height="360" aria-label="RPG de ação top-down em pixel art"></canvas>
     <div class="hud">
       <div class="status">
         <div class="statline"><span>VIDA</span><span id="hpText">100 / 100</span></div>
@@ -43,13 +43,13 @@
   </section>
   <footer class="bottom">
     <div class="keys">
-      <span><b class="key">A / D</b> mover</span>
-      <span><b class="key">W</b> pular</span>
+      <span><b class="key">W A S D</b> mover</span>
+      <span><b class="key">K</b> golpe corpo a corpo</span>
       <span><b class="key">J</b> carregar / lançar Ki</span>
-      <span><b class="key">K</b> atacar</span>
-      <span><b class="key">Shift</b> correr</span>
+      <span><b class="key">ESPAÇO</b> esquiva</span>
+      <span><b class="key">SHIFT</b> esquiva</span>
     </div>
-    <span class="hint">Segure J para concentrar energia. Solte para disparar.</span>
+    <span class="hint">Derrote os inimigos para liberar a saída e avançar de área.</span>
   </footer>
 </main>
 <script src="game.js" defer></script>
