@@ -1,47 +1,46 @@
 # Dragon Ball: Ki Rising
 
-Um jogo de ação 2D em **pixel art**, inspirado no universo de Dragon Ball e na estética de *Dragon Ball Evolution*. O objetivo desta versão é experimentar o combate, controlar o Ki e treinar o personagem.
+Um RPG de ação **top-down em pixel art**, inspirado no universo de Dragon Ball. Explore regiões, enfrente inimigos com padrões de ataque diferentes, domine o Ki e evolua seu personagem.
 
 ## ▶ Jogar no navegador
 
-**[CLIQUE AQUI PARA JOGAR — Dragon Ball: Ki Rising](https://nik0lasdev.github.io/dragon-ball-Y/)**
+**[JOGAR — Dragon Ball: Ki Rising](https://nik0lasdev.github.io/dragon-ball-Y/)**
 
-O jogo roda diretamente no navegador, sem instalação, cadastro ou download.
+O jogo roda diretamente no navegador, sem instalação.
 
-> Se o link não abrir o jogo, o GitHub Pages pode ainda não estar habilitado para este repositório. Nesse caso, o administrador deve ativar Pages em **Settings → Pages**, selecionar **Deploy from a branch**, escolher a branch `main` e a pasta `/ (root)`.
-
-## Como jogar
-
-Use o teclado para controlar o personagem:
+## Controles
 
 | Tecla | Ação |
 |:---:|---|
-| `A` / `D` ou `←` / `→` | Andar para a esquerda e para a direita |
-| `W` ou `↑` | Pular |
-| `Shift` | Correr |
-| **Segurar `J`** | Concentrar e carregar Ki |
-| **Soltar `J`** | Disparar a Bola de Ki |
-| `K` | Ataque físico |
+| `W A S D` ou setas | Movimentar em oito direções |
+| `K` | Ataque corpo a corpo na direção atual |
+| Segurar `J` | Carregar Ki |
+| Soltar `J` | Disparar esfera de Ki |
+| `Espaço` ou `Shift` | Esquiva rápida com breve invulnerabilidade |
 
-## Sistemas disponíveis
+## Áreas
 
-- **Vida:** acompanhe a saúde do personagem e evite os ataques dos inimigos.
-- **Ki:** energia usada para carregar e lançar ataques especiais. O Ki se recupera gradualmente.
-- **Bola de Ki:** mantenha `J` pressionado para concentrar energia. Quanto mais energia for investida, maior e mais forte será a esfera. Solte a tecla para disparar.
-- **Inimigos:** enfrente adversários que perseguem e atacam o jogador.
-- **Treinamento:** pratique os ataques contra um alvo e recupere Ki mais rapidamente.
-- **Progressão:** derrote inimigos para ganhar experiência e subir de nível, aumentando seus atributos.
+- **Planície do Início:** primeira região, com espaço para aprender os padrões de combate.
+- **Floresta das Sombras:** área com vegetação, obstáculos e inimigos que atacam à distância.
+- **Desfiladeiro Rubro:** região final deste protótipo, com adversários mais resistentes.
 
-## Modos
+Derrote todos os inimigos da região para liberar a passagem à próxima área. A câmera acompanha o jogador e obstáculos bloqueiam a movimentação.
 
-- **Combate:** enfrente inimigos que podem causar dano ao jogador.
-- **Treinamento:** pratique ataques e carregue Ki com regeneração acelerada.
+## Inimigos e padrões de ataque
 
-Alterne entre os modos pelos botões na parte superior da tela.
+- **Lutador:** persegue o jogador e prepara um golpe corpo a corpo. O aviso visual dá tempo para esquivar.
+- **Atirador:** tenta manter distância, mira no jogador e dispara projéteis de Ki.
+- **Investidor:** anuncia a direção do ataque e avança em uma investida rápida. Saia da linha de impacto.
 
-## Sobre o projeto
+Observe os sinais visuais antes de cada golpe: cada tipo exige uma resposta diferente.
 
-Esta é uma versão inicial e experimental. Novos golpes, personagens, animações, cenários e sistemas poderão ser adicionados conforme o desenvolvimento avançar.
+## Progressão
+
+- Vida e Ki possuem barras próprias.
+- O Ki se recupera gradualmente e é consumido ao lançar esferas.
+- Derrotar inimigos concede experiência.
+- Subir de nível aumenta os atributos máximos e a força dos golpes.
+- O modo **Treinamento** oferece um alvo para testar ataques sem pressão.
 
 ## Tecnologias
 
@@ -50,8 +49,12 @@ Esta é uma versão inicial e experimental. Novos golpes, personagens, animaçõ
 - JavaScript
 - Canvas 2D
 
-Não é necessário instalar bibliotecas ou executar um servidor para abrir o arquivo localmente: basta abrir `index.html` em um navegador moderno.
+Não são necessárias bibliotecas externas para o funcionamento do jogo.
+
+## Estado do projeto
+
+Protótipo em desenvolvimento. As áreas, inimigos e padrões de ataque formam a base para expansão futura com novas regiões, técnicas, chefes, NPCs e missões.
 
 ## Aviso
 
-Projeto de fã, sem vínculo oficial com a franquia Dragon Ball ou seus detentores de direitos. Marcas e propriedades intelectuais mencionadas pertencem aos respectivos titulares.
+Projeto de fã, sem vínculo oficial com a franquia Dragon Ball ou seus detentores de direitos. Marcas e propriedades intelectuais pertencem aos respectivos titulares.
