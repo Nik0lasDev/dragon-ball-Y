@@ -1,46 +1,53 @@
 # Dragon Ball: Ki Rising
 
-Um RPG de ação **top-down em pixel art**, inspirado no universo de Dragon Ball. Explore regiões, enfrente inimigos com padrões de ataque diferentes, domine o Ki e evolua seu personagem.
+RPG de ação **top-down em pixel art**, inspirado no universo de Dragon Ball. Você começa como um recruta da Força de Frieza, a bordo da nave do próprio Freeza. Receba ordens, conquiste planetas e aumente sua força de luta para subir na hierarquia.
 
-## ▶ Jogar no navegador
+## Jogar
 
-**[JOGAR — Dragon Ball: Ki Rising](https://nik0lasdev.github.io/dragon-ball-Y/)**
+[JOGAR — Dragon Ball: Ki Rising](https://nik0lasdev.github.io/dragon-ball-Y/)
 
 O jogo roda diretamente no navegador, sem instalação.
+
+## Como jogar
+
+Você começa dentro da nave. Caminhe até os terminais e pressione E para interagir.
+
+- **Central de operações:** escolha uma missão e confira o requisito de força de luta.
+- **Treinamento:** consulte e desbloqueie novas técnicas conforme sobe de nível.
+- **Arsenal:** equipe itens encontrados durante as missões.
+- **Missões:** desembarque em planetas, derrote as tropas locais e vença o chefe para conquistar o setor.
+
+Cada planeta exige uma força de luta mínima. Se ainda não estiver forte o suficiente, conclua missões anteriores, ganhe experiência e equipe itens.
 
 ## Controles
 
 | Tecla | Ação |
 |:---:|---|
-| `W A S D` ou setas | Movimentar em oito direções |
-| `K` | Ataque corpo a corpo na direção atual |
-| Segurar `J` | Carregar Ki |
-| Soltar `J` | Disparar esfera de Ki |
-| `Espaço` ou `Shift` | Esquiva rápida com breve invulnerabilidade |
+| W A S D ou setas | Movimentar |
+| E | Interagir com terminais |
+| K | Ataque corpo a corpo |
+| Segurar J | Carregar Ki |
+| Soltar J | Disparar esfera de Ki |
+| 1 | Raio da Morte |
+| 2 | Onda Explosiva |
+| 3 | Supernova |
+| Espaço ou Shift | Esquiva |
+| R | Retornar à nave após ser derrotado |
+| Esc | Fechar painel |
 
-## Áreas
+## Progressão e conteúdo
 
-- **Planície do Início:** primeira região, com espaço para aprender os padrões de combate.
-- **Floresta das Sombras:** área com vegetação, obstáculos e inimigos que atacam à distância.
-- **Desfiladeiro Rubro:** região final deste protótipo, com adversários mais resistentes.
+- **Nave de Frieza:** área inicial e centro de operações.
+- **Planeta Namek:** primeira missão de conquista, com Dodoria como chefe.
+- **Yardrat:** território disputado pela Força Ginyu.
+- **Terra:** missão ligada à chegada de Raditz.
+- **Planeta do Senhor Kaio:** setor de alto risco, protegido por Cell.
+- **Patentes:** recruta, soldado, elite, oficial, comandante, general e força especial.
+- **Técnicas:** Raio da Morte, Onda Explosiva e Supernova.
+- **Itens:** scouter aprimorado, armadura de batalha, botas de combate e sementes dos deuses.
+- **Chefes:** possuem mais vida, ataques especiais e padrões próprios.
 
-Derrote todos os inimigos da região para liberar a passagem à próxima área. A câmera acompanha o jogador e obstáculos bloqueiam a movimentação.
-
-## Inimigos e padrões de ataque
-
-- **Lutador:** persegue o jogador e prepara um golpe corpo a corpo. O aviso visual dá tempo para esquivar.
-- **Atirador:** tenta manter distância, mira no jogador e dispara projéteis de Ki.
-- **Investidor:** anuncia a direção do ataque e avança em uma investida rápida. Saia da linha de impacto.
-
-Observe os sinais visuais antes de cada golpe: cada tipo exige uma resposta diferente.
-
-## Progressão
-
-- Vida e Ki possuem barras próprias.
-- O Ki se recupera gradualmente e é consumido ao lançar esferas.
-- Derrotar inimigos concede experiência.
-- Subir de nível aumenta os atributos máximos e a força dos golpes.
-- O modo **Treinamento** oferece um alvo para testar ataques sem pressão.
+Derrotar inimigos concede experiência e pode gerar itens. Conquistar planetas concede créditos e aumenta sua força de luta. Subir de nível melhora seus atributos e libera técnicas.
 
 ## Tecnologias
 
@@ -49,12 +56,12 @@ Observe os sinais visuais antes de cada golpe: cada tipo exige uma resposta dife
 - JavaScript
 - Canvas 2D
 
-Não são necessárias bibliotecas externas para o funcionamento do jogo.
+Sem bibliotecas externas.
 
 ## Estado do projeto
 
-Protótipo em desenvolvimento. As áreas, inimigos e padrões de ataque formam a base para expansão futura com novas regiões, técnicas, chefes, NPCs e missões.
+Protótipo em desenvolvimento. O ciclo principal de jogo é: nave → seleção de missão → combate planetário → chefe → recompensa → retorno à nave. Novos planetas, personagens, missões, técnicas e sistemas podem ser adicionados sobre essa base.
 
 ## Aviso
 
-Projeto de fã, sem vínculo oficial com a franquia Dragon Ball ou seus detentores de direitos. Marcas e propriedades intelectuais pertencem aos respectivos titulares.
+Projeto de fã, sem vínculo oficial com a franquia Dragon Ball ou seus detentores de direitos. Personagens, nomes e referências pertencem aos respectivos titulares.
