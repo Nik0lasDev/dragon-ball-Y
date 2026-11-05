@@ -17,9 +17,9 @@ const itemDefs=[
  {id:'scouter',name:'Scouter aprimorado',rarity:'RARO',desc:'+35 de força de luta.',power:35},
  {id:'armor',name:'Armadura de batalha',rarity:'INCOMUM',desc:'+35 de vida máxima.',hp:35},
  {id:'boots',name:'Botas de combate',rarity:'INCOMUM',desc:'Esquiva recarrega mais rápido.',dodge:true},
- {id:'senzu',name:'Semente dos deuses',rarity:'ÉPICO',desc='Recupera toda a vida e o Ki.',heal:true}
+ {id:'senzu',name:'Semente dos deuses',rarity:'ÉPICO',desc:'Recupera toda a vida e o Ki.',heal:true}
 ];
-let inventory=[{...itemDefs[0],uid:1,equipped:true}],itemSeq=2,conquered=new Set(),missionDone=0;
+let inventory=[{...itemDefs[0],uid:1,equipped:true}],itemSeq=2,conquered=new Set(),missionDone=0;player.equipped=[inventory[0]];
 const skills=[
  {id:1,name:'Raio da Morte',key:'1',cost:18,cd:1.5,unlock:1,desc:'Disparo veloz e preciso de Ki.',damage:30,color:'#ff5d70',type:'beam'},
  {id:2,name:'Onda Explosiva',key:'2',cost:32,cd:4,unlock:3,desc:'Explosão circular que atinge inimigos próximos.',damage:46,color:'#ffb04e',type:'nova'},
