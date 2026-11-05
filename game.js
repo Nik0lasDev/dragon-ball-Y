@@ -91,15 +91,22 @@ function update(dt){elapsed+=dt;player.attack=Math.max(0,player.attack-dt);playe
  camera.x=clamp(player.x-W/2,0,MAP_W-W);camera.y=clamp(player.y-H/2,0,MAP_H-H);updateHud();}
 function updateHud(){$('hpText').textContent=Math.ceil(player.hp)+' / '+player.maxHp;$('kiText').textContent=Math.floor(player.ki)+' / '+player.maxKi;$('hpBar').style.width=player.hp/player.maxHp*100+'%';$('kiBar').style.width=player.ki/player.maxKi*100+'%';$('level').textContent=player.level;$('xpText').textContent=player.xp;$('xpBar').style.width=player.xp/(player.level*100)*100+'%';$('powerText').textContent=powerTotal();$('rankText').textContent=player.rank;refreshRank();}
 function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
-function drawShip(){rect(0,0,W,H,'#253c55');for(let y=0;y<H;y+=32)for(let x=0;x<W;x+=32){rect(x+1,y+1,30,30,(x/32+y/32)%2?'#314c68':'#2b435e');rect(x+4,y+4,24,2,'#49627a');}rect(0,0,W,20,'#15273d');rect(0,H-20,W,20,'#15273d');for(let x=0;x<W;x+=80){rect(x,20,3,H-40,'#182e45');rect(x+3,20,1,H-40,'#57728b');}
- // command stations and capsule-style doors
+function drawShip(){
+ // Interior metálico da nave, com painéis modulares e luzes de orientação.
+ rect(0,0,W,H,'#253c55');
+ for(let y=0;y<H;y+=32)for(let x=0;x<W;x+=32){rect(x+1,y+1,30,30,(x/32+y/32)%2?'#314c68':'#2b435e');rect(x+4,y+4,24,2,'#49627a');rect(x+4,y+27,24,1,'#1b3047');}
+ rect(0,0,W,20,'#15273d');rect(0,H-20,W,20,'#15273d');
+ for(let x=0;x<W;x+=80){rect(x,20,3,H-40,'#182e45');rect(x+3,20,1,H-40,'#57728b');}
+ // Trilhos luminosos no piso.
+ for(let x=20;x<W;x+=80){rect(x-camera.x%80,25,2,H-50,'#41617c');rect(x+4-camera.x%80,25,1,H-50,'#263e56');}
  drawConsole(780-camera.x,320-camera.y,'MAPA GALÁCTICO');drawConsole(575-camera.x,320-camera.y,'TREINAMENTO');drawConsole(400-camera.x,320-camera.y,'ARSENAL');
+ // Cápsulas de transporte e compartimentos laterais.
  rect(100-camera.x,100-camera.y,130,50,'#172c42');rect(105-camera.x,105-camera.y,120,40,'#3c6b88');rect(110-camera.x,110-camera.y,110,30,'#8ac4d0');rect(100-camera.x,475-camera.y,150,42,'#172c42');rect(108-camera.x,482-camera.y,134,28,'#5d7184');
- // Frieza-force insignia
- ctx.fillStyle='#e6c16e';ctx.font='bold 13px monospace';ctx.textAlign='center';ctx.fillText('FRIEZA FORCE',320-camera.x,75-camera.y);ctx.strokeStyle='#d8b86e';ctx.strokeRect(274-camera.x,87-camera.y,92,3);
+ for(let i=0;i<6;i++){const x=28+i*108-camera.x%108;rect(x,30,4,5,i%2?'#e8b968':'#6eeaff');rect(x+1,32,2,2,'#fff');}
+ // Brasão central e letreiro da Força de Frieza.
+ ctx.fillStyle='#e6c16e';ctx.font='bold 13px monospace';ctx.textAlign='center';ctx.fillText('FRIEZA FORCE',320-camera.x,75-camera.y);ctx.strokeStyle='#d8b86e';ctx.lineWidth=2;ctx.strokeRect(274-camera.x,87-camera.y,92,3);
  drawNpc(575-camera.x,255-camera.y,'#c7c5dc');drawNpc(780-camera.x,255-camera.y,'#a8b8cc');
-}
-function drawConsole(x,y,label){rect(x-32,y-22,64,44,'#14263b');rect(x-27,y-17,54,29,'#47718d');rect(x-23,y-13,46,21,'#6ed2dc');rect(x-18,y-8,36,3,'#d8f6ed');rect(x-18,y-2,23,3,'#d8f6ed');ctx.fillStyle='#ffe3a0';ctx.font='bold 7px monospace';ctx.textAlign='center';ctx.fillText(label,x,y+34);}
+}function drawConsole(x,y,label){rect(x-32,y-22,64,44,'#14263b');rect(x-27,y-17,54,29,'#47718d');rect(x-23,y-13,46,21,'#6ed2dc');rect(x-18,y-8,36,3,'#d8f6ed');rect(x-18,y-2,23,3,'#d8f6ed');ctx.fillStyle='#ffe3a0';ctx.font='bold 7px monospace';ctx.textAlign='center';ctx.fillText(label,x,y+34);}
 function drawNpc(x,y,color){ctx.fillStyle='#0006';ctx.beginPath();ctx.ellipse(x,y+12,14,6,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,10,13,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f2c7a4';ctx.beginPath();ctx.arc(x,y-10,7,0,Math.PI*2);ctx.fill();}
 function drawPlanet(){
  const p=activePlanet;rect(0,0,W,H,p.ground);
