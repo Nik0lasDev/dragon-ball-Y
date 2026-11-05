@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#171d32">
+<title>Dragon Ball: Ki Rising</title>
+<style>
+:root{color-scheme:dark;--gold:#ffd45b;--panel:#111a2c;--line:#53627d}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#34486a 0,#171d32 58%,#0c1120 100%);font-family:Arial,sans-serif;color:#fff;display:flex;justify-content:center;align-items:center;padding:18px}
+.shell{width:min(100%,1100px)}header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px}h1{font-size:clamp(18px,3vw,27px);margin:0;letter-spacing:1px;text-transform:uppercase;text-shadow:2px 2px #9b4d35}h1 span{color:var(--gold)}.sub{font-size:11px;color:#b7c5dc;letter-spacing:2px;margin-top:4px}.top-actions{display:flex;gap:8px}
+button{font:700 12px Arial,sans-serif;color:#fff;background:#263650;border:1px solid #62738f;padding:10px 13px;cursor:pointer;text-transform:uppercase;letter-spacing:.6px;box-shadow:0 3px #0a1020}button:hover{background:#3b5277}button.active{background:#9a542e;border-color:#ffbd64;color:#fff4d4}button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.game-frame{border:3px solid #65748d;background:#101827;box-shadow:0 0 0 5px #0b1020,0 18px 55px #0009;position:relative}
+canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;aspect-ratio:16/9}
+.hud{position:absolute;inset:10px 12px auto;display:flex;justify-content:space-between;gap:14px;pointer-events:none;text-shadow:2px 2px #111}
+.status{width:min(34%,270px);background:#111a2cdd;border:1px solid #71809a;padding:8px 10px;clip-path:polygon(0 0,100% 0,100% 82%,96% 100%,0 100%)}
+.statline{display:flex;justify-content:space-between;font-size:10px;font-weight:bold;letter-spacing:1px;margin-bottom:4px}.bar{height:10px;background:#252b3b;border:1px solid #8590a5;margin-bottom:7px}.fill{height:100%;width:100%;transition:width .12s}.hp{background:linear-gradient(90deg,#bd303b,#ff6c5b)}.ki{background:linear-gradient(90deg,#2376db,#58e4ff)}.xp{background:linear-gradient(90deg,#d38a25,#ffe477)}
+.center-info{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:#111a2cdd;border:1px solid #71809a;padding:7px 12px;font-size:10px;letter-spacing:1px;white-space:nowrap}
+.bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 2px;color:#c1cde0;font-size:12px;flex-wrap:wrap}.keys{display:flex;gap:12px;flex-wrap:wrap}.key{color:#ffe08a;font-weight:bold}.hint{color:#92a2bd}
+.toast{position:absolute;left:50%;top:26%;transform:translate(-50%,-50%);font-weight:900;font-size:clamp(18px,4vw,30px);color:#ffe58a;text-shadow:3px 3px #7b3425,0 0 15px #ff9b34;pointer-events:none;opacity:0;transition:opacity .2s}.toast.show{opacity:1}
+@media(max-width:600px){body{padding:8px}.hud{inset:5px 5px auto;gap:5px}.status{padding:5px;width:39%}.statline{font-size:8px}.bar{height:7px;margin-bottom:4px}.center-info{top:auto;bottom:8px;font-size:8px}.bottom{font-size:10px}.top-actions button{padding:8px;font-size:10px}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div><h1>DRAGON BALL <span>· KI RISING</span></h1><div class="sub">PROTÓTIPO PIXEL ART · VERSÃO 0.1</div></div><div class="top-actions"><button id="arenaBtn" class="active">Combate</button><button id="trainBtn">Treinamento</button></div></header>
+<section class="game-frame">
+<canvas id="game" width="480" height="270" aria-label="Jogo de luta em pixel art"></canvas>
+<div class="hud">
+ <div class="status"><div class="statline"><span>VIDA</span><span id="hpText">100 / 100</span></div><div class="bar"><div id="hpBar" class="fill hp"></div></div><div class="statline"><span>KI</span><span id="kiText">100 / 100</span></div><div class="bar"><div id="kiBar" class="fill ki"></div></div></div>
+ <div class="center-info" id="modeLabel">CAMPO DE BATALHA</div>
+ <div class="status"><div class="statline"><span>NÍVEL <b id="level">1</b></span><span>EXP <b id="xpText">0</b></span></div><div class="bar"><div id="xpBar" class="fill xp" style="width:0%"></div></div><div class="statline"><span>INIMIGOS</span><span id="enemyCount">1</span></div><div class="statline"><span>FORÇA</span><span id="powerText">10</span></div></div>
+</div><div class="toast" id="toast"></div>
+</section>
+<footer class="bottom"><div class="keys"><span><b class="key">A / D</b> mover</span><span><b class="key">W</b> pular</span><span><b class="key">J</b> carregar / lançar Ki</span><span><b class="key">K</b> ataque</span><span><b class="key">Shift</b> correr</span></div><span class="hint">Segure J para concentrar energia. Solte para disparar.</span></footer>
+</main>
+<script>
+(()=>{
+'use strict';
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+ctx.imageSmoothingEnabled=false;
+const $=id=>document.getElementById(id);
+const W=480,H=270,WORLD=1600,GROUND=220;
+const keys=new Set();
+let mode='arena',last=0,toastTimer=0,shake=0,projectiles=[],particles=[],enemies=[],xp=0,level=1;
+const player={x:100,y:GROUND-34,vx:0,vy:0,w:18,h:34,face:1,hp:100,maxHp:100,ki:100,maxKi:100,charge:0,onGround:true,attack:0,invuln:0,walk:0};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function notify(s){$('toast').textContent=s;$('toast').classList.add('show');toastTimer=1.4}
+function makeEnemy(x,dummy=false){return{x,y:GROUND-30,w:dummy?22:18,h:30,hp:dummy?999:45,maxHp:dummy?999:45,vx:0,face:-1,attack:0,cooldown:0.5+Math.random(),hit:0,dummy,alive:true}}
+function setMode(next){mode=next;enemies=[];projectiles=[];particles=[];if(next==='arena'){enemies.push(makeEnemy(390));$('modeLabel').textContent='CAMPO DE BATALHA';notify('Prepare-se para lutar!')}else{enemies.push(makeEnemy(350,true));$('modeLabel').textContent='ÁREA DE TREINAMENTO';notify('Treine seus ataques e controle o Ki.')}$('arenaBtn').classList.toggle('active',next==='arena');$('trainBtn').classList.toggle('active',next==='training')}
+$('arenaBtn').addEventListener('click',()=>setMode('arena'));$('trainBtn').addEventListener('click',()=>setMode('training'));
+window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(k))e.preventDefault();if(!keys.has(k)&&k==='w'&&player.onGround){player.vy=-7.5;player.onGround=false}if(!keys.has(k)&&k==='k'&&player.attack<=0){melee()}keys.add(k)});
+window.addEventListener('keyup',e=>{const k=e.key.toLowerCase();keys.delete(k);if(k==='j'&&player.charge>0)fireKi()});
+window.addEventListener('blur',()=>{keys.clear();if(player.charge>0)fireKi()});
+function melee(){player.attack=.22;for(const e of enemies){if(!e.alive||Math.abs(e.x-player.x)>34||Math.abs(e.y-player.y)>25)continue;if(Math.sign(e.x-player.x)===player.face||Math.abs(e.x-player.x)<12)damageEnemy(e,12+level*2)}}
+function damageEnemy(e,n){if(e.dummy){xp+=2;player.ki=Math.min(player.maxKi,player.ki+1);burst(e.x,e.y+10,'#ffcf64',5);return}e.hp-=n;e.hit=.15;shake=2;burst(e.x,e.y+10,'#ffb35b',8);if(e.hp<=0){e.alive=false;xp+=25;player.ki=Math.min(player.maxKi,player.ki+18);notify('Inimigo derrotado! +25 EXP');if(xp>=level*100){xp-=level*100;level++;player.maxHp+=10;player.maxKi+=10;player.hp=player.maxHp;player.ki=player.maxKi;notify('NÍVEL '+level+'! Seus atributos aumentaram.')}}}
+function fireKi(){const amount=Math.min(player.charge,player.ki);if(amount<8){player.charge=0;return}player.ki-=amount;const size=4+amount*.16;projectiles.push({x:player.x+player.face*15,y:player.y-18,vx:player.face*(3+amount*.035),r:size,damage:Math.round(amount*.75)+8,life:2.5});burst(player.x+player.face*15,player.y-18,'#7beaff',10);player.charge=0;shake=1}
+function burst(x,y,color,n){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=.5+Math.random()*2;particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.25+Math.random()*.35,color})}}
+function update(dt){dt=Math.min(dt,.033);player.invuln=Math.max(0,player.invuln-dt);player.attack=Math.max(0,player.attack-dt);player.ki=Math.min(player.maxKi,player.ki+(mode==='training'?9:4)*dt);player.walk+=Math.abs(player.vx)*dt*.12;
+const move=(keys.has('d')||keys.has('arrowright')?1:0)-(keys.has('a')||keys.has('arrowleft')?1:0);const speed=keys.has('shift')?2.7:1.7;player.vx=move*speed;if(move)player.face=move;player.x=clamp(player.x+player.vx,8,WORLD-20);
+player.vy+=.36;player.y+=player.vy;if(player.y>=GROUND-player.h){player.y=GROUND-player.h;player.vy=0;player.onGround=true}
+if(keys.has('j')&&player.ki>0){player.charge=Math.min(100,player.charge+dt*42);player.ki=Math.max(0,player.ki-dt*5);if(Math.random()<dt*14)burst(player.x,player.y-20,'#7beaff',1)}
+for(const e of enemies){if(!e.alive)continue;e.hit=Math.max(0,e.hit-dt);if(e.dummy){e.x=player.x+player.face*90;e.y=GROUND-e.h;continue}const dx=player.x-e.x,dist=Math.abs(dx);e.face=Math.sign(dx)||1;if(dist>25){e.vx=Math.sign(dx)*.55;e.x=clamp(e.x+e.vx,5,WORLD-20)}else{e.vx=0;e.cooldown-=dt;if(e.cooldown<=0&&player.invuln<=0){e.cooldown=1.25;e.attack=.2;player.hp=Math.max(0,player.hp-7);player.invuln=.5;shake=3;burst(player.x,player.y-12,'#ff6b68',7);if(player.hp<=0)notify('Você foi derrotado! Troque de modo para recomeçar.')}}}
+for(const p of projectiles){p.x+=p.vx;p.life-=dt;for(const e of enemies){if(!e.alive)continue;if(Math.abs(p.x-e.x)<p.r+e.w/2&&Math.abs(p.y-(e.y-e.h/2))<p.r+e.h/2){damageEnemy(e,p.damage);p.life=0;break}}}
+projectiles=projectiles.filter(p=>p.life>0&&p.x>-30&&p.x<WORLD+30);
+for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=.04;p.life-=dt}particles=particles.filter(p=>p.life>0);
+if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)$('toast').classList.remove('show')}
+if(mode==='arena'&&enemies.every(e=>!e.alive)){enemies.push(makeEnemy(clamp(player.x+260,250,WORLD-80)));notify('Outro adversário apareceu!')}
+updateHud()}
+function updateHud(){$('hpText').textContent=Math.ceil(player.hp)+' / '+player.maxHp;$('kiText').textContent=Math.floor(player.ki)+' / '+player.maxKi;$('hpBar').style.width=(player.hp/player.maxHp*100)+'%';$('kiBar').style.width=(player.ki/player.maxKi*100)+'%';$('level').textContent=level;$('xpText').textContent=xp;$('xpBar').style.width=(xp/(level*100)*100)+'%';$('enemyCount').textContent=enemies.filter(e=>e.alive&&!e.dummy).length;$('powerText').textContent=10+(level-1)*2}
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h))}
+function drawBackground(cam){rect(0,0,W,H,'#8bc4d4');rect(0,120,W,100,'#d8b878');for(let i=0;i<7;i++){let x=((i*100-cam*.22)%700+700)%700-40;rect(x,88,70,42,'#7b9a83');rect(x+12,72,44,25,'#7b9a83');rect(x+25,60,18,18,'#7b9a83')}rect(0,178,W,42,'#b9a06c');for(let i=0;i<30;i++){let x=((i*37-cam*.6)%W+W)%W;rect(x,183+(i%3)*5,12,2,'#a88b5b')}rect(0,GROUND,W,H-GROUND,'#76503b');rect(0,GROUND,W,4,'#d4a15b');for(let i=0;i<30;i++){let x=((i*29-cam)%W+W)%W;rect(x,GROUND+12+(i%4)*7,8,2,'#936747')}}
+function drawFighter(x,y,face,enemy=false,walk=0,hit=0,charge=0){ctx.save();ctx.translate(Math.round(x),Math.round(y));ctx.scale(face,1);if(hit>0)ctx.globalAlpha=.65;
+const bob=Math.sin(walk)*1.5;rect(-5,23+bob,5,10,enemy?'#333b4c':'#27344d');rect(1,23-bob,5,10,enemy?'#333b4c':'#27344d');rect(-6,31+bob,8,3,'#d5b18a');rect(0,31-bob,8,3,'#d5b18a');
+rect(-7,11,15,14,enemy?'#9d463d':'#e76c2f');rect(-8,13,3,9,enemy?'#713d3b':'#f4c24f');rect(6,13,3,9,enemy?'#713d3b':'#f4c24f');rect(-7,22,15,3,enemy?'#d6c4a1':'#315a9b');rect(-3,14,7,4,enemy?'#d3b88d':'#f5c64e');
+rect(-6,1,13,11,enemy?'#d9a879':'#efbd8b');rect(-7,-2,14,5,enemy?'#6b3b32':'#252a35');rect(-8,0,4,5,enemy?'#6b3b32':'#252a35');rect(4,-4,5,6,enemy?'#6b3b32':'#252a35');rect(1,4,2,2,'#222');rect(7,5,2,2,'#222');
+rect(7,14,4,5,enemy?'#d9a879':'#efbd8b');if(charge>0){ctx.globalAlpha=.25+charge/150;ctx.fillStyle='#69dfff';ctx.beginPath();ctx.arc(13,-5,5+charge*.12,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1}
+ctx.restore()}
+function draw(){const cam=clamp(player.x-W/2,0,WORLD-W);ctx.save();if(shake>0){ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);shake=Math.max(0,shake-.25)}drawBackground(cam);
+for(let i=0;i<6;i++){let x=((i*310-cam*.8)%1900+1900)%1900-100;rect(x,GROUND-25,9,25,'#5e4938');rect(x-7,GROUND-35,23,14,'#39754e');rect(x-3,GROUND-42,15,12,'#47885a')}
+for(const e of enemies){if(!e.alive)continue;drawFighter(e.x-cam,e.y,e.face, !e.dummy,0,e.hit);if(!e.dummy){rect(e.x-cam-12,e.y-e.h-10,24,3,'#352d36');rect(e.x-cam-12,e.y-e.h-10,24*e.hp/e.maxHp,3,'#f06454')}else{rect(e.x-cam-9,e.y-e.h-8,18,3,'#ffdb73')}}
+drawFighter(player.x-cam,player.y,player.face,false,player.walk,player.invuln,player.charge);
+if(player.charge>0){ctx.globalAlpha=.35+Math.sin(performance.now()*.02)*.12;ctx.fillStyle='#73e9ff';ctx.beginPath();ctx.arc(player.x-cam,player.y-19,7+player.charge*.14,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1}
+for(const p of projectiles){ctx.fillStyle='#42d9ff';ctx.beginPath();ctx.arc(p.x-cam,p.y,p.r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#e5ffff';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#fff';ctx.fillRect(p.x-cam-p.r/2,p.y-p.r/2,p.r,p.r)}
+for(const p of particles){ctx.globalAlpha=clamp(p.life*2,0,1);rect(p.x-cam,p.y,2,2,p.color)}ctx.globalAlpha=1;
+if(player.charge>0){rect(170,250,140,5,'#1c3148');rect(170,250,140*player.charge/100,5,'#68e8ff');ctx.fillStyle='#fff';ctx.font='7px monospace';ctx.fillText('CARGANDO KI',205,246)}
+ctx.restore()}
+function loop(t){const dt=(t-last)/1000||0;last=t;update(dt);draw();requestAnimationFrame(loop)}
+setMode('arena');updateHud();requestAnimationFrame(loop);
+})();
+</script>
+</body></html>
